@@ -5,6 +5,7 @@
     "version": "0.0.1",
     "publisher": "roby",
     "icon": "assets/icon.png",
+    "main": "./out/main.js",
     "author": {
         "name": "roby2014"
     },
@@ -17,7 +18,8 @@
     },
     "categories": [
         "Programming Languages"
-    ],
+    ],      "activationEvents": [
+      "onLanguage:p16"],
     "contributes": {
         "languages": [
             {
@@ -43,14 +45,14 @@
     },
     "scripts": {
         "vscode:prepublish": "npm run build",
-        "build": "tsc -p ./",
-        "watch": "tsc -watch -p ./"
+        "build": "tsc",
+        "watch": "tsc -watch"
     },
     "dependencies": {
-        "typescript": "^4.7.4",
-        "vscode": "^1.1.37"
-    },
-    "devDependencies": {
+        "typescript": "^4.7.4"
+      },
+      "devDependencies": {
+      "@types/vscode": "^1.63.1",
         "@types/node": "^18.0.6"
     }
 }

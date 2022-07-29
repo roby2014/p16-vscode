@@ -11,4 +11,4 @@ export function activate(context: ExtensionContext) {
   Workspace.onDidChangeTextDocument((e: TextDocumentChangeEvent) => {
     console.log("onDidChangeTextDocument");
   });
-} 
+}  

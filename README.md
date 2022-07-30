@@ -5,13 +5,18 @@ This extension was made to be used by students in the [Computer Architecture](ht
 
 ## Features
 
-<img src="https://github.com/roby2014/p16-vscode/blob/main/assets/test_prev.png?raw=true" />
+### Syntax Highlighting
+<img width="500" src="https://github.com/roby2014/p16-vscode/blob/master/assets/test_prev.png?raw=true" />
 
-\!\[Live error messages\]\(images/feature-x.png\)
+### Live error messages
+<img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/live_errors_prev.png?raw=true" />
 
-\!\[Documentation\]\(images/feature-x.png\)
+### TODO
+[ ] Parse the remaining instructions for the live errors feature
 
-\!\[Built-in compiler?\]\(images/feature-x.png\)
+[ ] Built-in compiler
+
+[ ] Find bugs!
 
 ## Requirements
 

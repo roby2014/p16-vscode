@@ -6,8 +6,10 @@ import {
   TextDocumentChangeEvent,
   Diagnostic,
   languages,
+  commands,
   window,
 } from "vscode";
+import { extname } from "path";
 import { parse_line } from "./parser/parser";
 import { is_label, print_error } from "./parser/utils";
 import { isP16File, isSectionOrOther } from "./utils";
@@ -16,11 +18,33 @@ const p16Diagnostics = languages.createDiagnosticCollection("p16");
 
 /// main()
 export function activate(context: ExtensionContext) {
+
+  // TODO: built in compiler button on top right side
+  // register compile command
+  const compileP16 = commands.registerCommand("p16-vscode.compileP16", () => {
+    // dont compile if not a .s file
+    const file_path = window.activeTextEditor.document.uri.fsPath;
+    if (extname(file_path).toLowerCase() !== ".s") {
+      return;
+    }
+
+    // call compiler
+    const cp = require('child_process')
+    cp.exec(`pas.exe ${file_path}`, (err, stdout, stderr) => {
+      if (err) {
+        window.showErrorMessage(`${err}`);
+        window.showErrorMessage(`Please make sure that the compiler "pas.exe" is on your system $PATH`);
+      }
+    });
+  }
+  );
+  context.subscriptions.push(compileP16);
+
+  // when file changes, parse code and check for errors
   Workspace.onDidChangeTextDocument((e: TextDocumentChangeEvent) => {
     if (!isP16File(e.document.uri.fsPath) || e.contentChanges.length === 0) {
       return;
     }
-
     const activeEditor = window.activeTextEditor;
     const curr_line = activeEditor ? activeEditor.selection.active.line : -1;
     refreshDiagnostics(e.document, curr_line);
@@ -28,7 +52,7 @@ export function activate(context: ExtensionContext) {
 }
 
 /// refresh error diagnostics
-async function refreshDiagnostics(document: TextDocument, curr_line: number) {
+function refreshDiagnostics(document: TextDocument, curr_line: number) {
   p16Diagnostics.delete(document.uri);
   let errorDiagnostics: Diagnostic[] = [];
 

@@ -16,11 +16,13 @@ This extension was made to be used by students in the [Computer Architecture](ht
 
 [ ] Built-in compiler
 
+[ ] File extension icon
+
 [ ] Find bugs!
 
 ## Requirements
 
-P16 compiler
+P16 compiler (assets/pas.exe) in your `$PATH`
 
 -----------------------------------------------------------------------------------------------------------
 

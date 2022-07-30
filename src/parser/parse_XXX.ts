@@ -297,7 +297,7 @@ function parse_rd_labelS_or_rnimmed4_or_rnrm(operands: string, instr: string): [
     // tmp = ['Rd', 'labelS | [Rn, #<immed_4>] | [Rn, Rm]']
     const usage = `( ${instr} Rd, labelS | [Rn, #<immed_4>] | [Rn, Rm] )`;
     let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
-    if (tmp.length != 2) {
+    if (tmp.length != 2 && tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
 
@@ -317,7 +317,7 @@ function parse_rd_rnimmed3_or_rnrm(operands: string, instr: string): [boolean, s
     // tmp = ['Rd', '[Rn, #<immed_3>] | [Rn, Rm]']
     const usage = `( ${instr} Rd, labelS | [Rn, #<immed_3>] | [Rn, Rm] )`;
     let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
-    if (tmp.length != 2) {
+    if (tmp.length != 2 && tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
 
@@ -337,7 +337,7 @@ function parse_rd_rnimmed4_or_rnrm(operands: string, instr: string): [boolean, s
     // tmp = ['Rd', '[Rn, #<immed_4>] | [Rn, Rm]']
     const usage = `( ${instr} Rd, [Rn, #<immed_4>] | [Rn, Rm] )`;
     let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
-    if (tmp.length != 2) {
+    if (tmp.length != 2 && tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
 

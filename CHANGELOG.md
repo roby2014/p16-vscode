@@ -12,3 +12,7 @@
 
 ## 0.0.4
 - Added compile file command: `p16-vscode.compileP16`
+
+## 0.0.4
+- Added compiler button that compiles current code
+- Disabled parser till next release with fixes

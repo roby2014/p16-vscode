@@ -8,11 +8,13 @@ import {
   languages,
   commands,
   window,
+  OutputChannel
 } from "vscode";
 import { extname } from "path";
 import { parse_line } from "./parser/parser";
 import { is_label, print_error } from "./parser/utils";
 import { isP16File, isSectionOrOther } from "./utils";
+import { execFile } from "child_process";
 
 const p16Diagnostics = languages.createDiagnosticCollection("p16");
 
@@ -28,16 +30,30 @@ export function activate(context: ExtensionContext) {
       return;
     }
 
-    // call compiler
-    const cp = require('child_process')
-    cp.exec(`pas.exe ${file_path}`, (err, stdout, stderr) => {
+    // call compiler and terminal window showing output
+    let output: OutputChannel;
+    if (!output) {
+      output = window.createOutputChannel("P16 Compiler");
+    }
+
+    output.clear();
+    output.show();
+
+    const command = `pas.exe ${file_path}`;
+    output.appendLine(`${command}\n`);
+
+    const cp = require('child_process');
+    cp.exec(command, (err, stdout, stderr) => {
+      output.append(stdout.toString().trim());
       if (err) {
-        window.showErrorMessage(`${err}`);
-        window.showErrorMessage(`Please make sure that the compiler "pas.exe" is on your system $PATH`);
+        output.append(stderr.toString().trim());
+        window.showErrorMessage(stderr);
+      } else {
+        output.append("Code compiled successfully!");
       }
     });
-  }
-  );
+
+  });
   context.subscriptions.push(compileP16);
 
   // when file changes, parse code and check for errors
@@ -47,13 +63,15 @@ export function activate(context: ExtensionContext) {
     }
     const activeEditor = window.activeTextEditor;
     const curr_line = activeEditor ? activeEditor.selection.active.line : -1;
-    refreshDiagnostics(e.document, curr_line);
+    if (0) // TODO: disabled parser for now......
+      refreshDiagnostics(e.document, curr_line);
   });
 }
 
 /// refresh error diagnostics
 function refreshDiagnostics(document: TextDocument, curr_line: number) {
   p16Diagnostics.delete(document.uri);
+
   let errorDiagnostics: Diagnostic[] = [];
 
   // parse input

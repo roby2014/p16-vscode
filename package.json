@@ -2,7 +2,7 @@
     "name": "p16",
     "displayName": "P16",
     "description": "P16 Assembly extension for VSCode",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "roby2014",
     "icon": "assets/icon.png",
     "main": "./out/main.js",
@@ -31,6 +31,23 @@
                     "light": "fileicons/compile.svg",
                     "dark": "fileicons/compile.svg"
                 }
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceLangId == p16",
+                    "command": "p16-vscode.compileP16",
+                    "group": "navigation@1"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "p16-vscode.compileP16",
+                "key": "ctrl+shift+d",
+                "mac": "cmd+shift+d",
+                "when": "resourceLangId == p16"
             }
         ],
         "languages": [

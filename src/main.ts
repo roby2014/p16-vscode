@@ -14,7 +14,6 @@ import { extname } from "path";
 import { parse_line } from "./parser/parser";
 import { is_label, print_error } from "./parser/utils";
 import { isP16File, isSectionOrOther } from "./utils";
-import { execFile } from "child_process";
 
 const p16Diagnostics = languages.createDiagnosticCollection("p16");
 
@@ -63,8 +62,7 @@ export function activate(context: ExtensionContext) {
     }
     const activeEditor = window.activeTextEditor;
     const curr_line = activeEditor ? activeEditor.selection.active.line : -1;
-    if (0) // TODO: disabled parser for now......
-      refreshDiagnostics(e.document, curr_line);
+    refreshDiagnostics(e.document, curr_line);
   });
 }
 

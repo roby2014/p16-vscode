@@ -380,7 +380,7 @@ function parse_rd_cpsr_or_spsr(operands: string, instr: string): [boolean, strin
     }
 
     // CPSR | SPSR
-    if (tmp[1] != "CPSR" && tmp[1] != "SPSR") {
+    if (tmp[1].toLowerCase() != "cpsr" && tmp[1].toLowerCase() != "spsr") {
         return [false, `${usage} \n\t ${tmp[1]} should be "CPSR" or "SPSR".`];
     }
 
@@ -398,7 +398,7 @@ function parse_cpsr_or_spsr_rm(operands: string, instr: string): [boolean, strin
     }
 
     // CPSR | SPSR
-    if (tmp[0] != "CPSR" && tmp[0] != "SPSR") {
+    if (tmp[0].toLowerCase() != "cpsr" && tmp[0].toLowerCase() != "spsr") {
         return [false, `${usage} \n\t ${tmp[0]} should be "CPSR" or "SPSR".`];
     }
 

@@ -7,6 +7,14 @@ export function parse_reg_operand(rx: string, is_rn: boolean = false): [boolean,
         return [false, `"Rn" should be R[0..7].`];
     }
 
+    if (is_rn)
+        if (rx == "sp" || rx == "pc" || rx == "lr" || rx == "spsr" || rx == "cpsr")
+            return [false, `"Rn" can not be ${rx}.`];
+
+    if (rx == "sp" || rx == "pc" || rx == "lr" || rx == "spsr" || rx == "cpsr")
+        return [true, ``];
+
+
     if (x == NaN || !valid_reg_num(x) || x == -1) {
         return [false, `"${rx}" is not a valid register.`];
     }

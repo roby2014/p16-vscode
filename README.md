@@ -1,3 +1,5 @@
+## ⚠️ PROJECT UNDER DEVELOPMENT ⚠️ Dont expect it to be 100% functional (for now)
+
 # P16
 
 P16 Assembly extension for [Visual Studio Code](https://code.visualstudio.com). <br>
@@ -12,9 +14,9 @@ This extension was made to be used by students in the [Computer Architecture](ht
 <img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/live_errors_prev.png?raw=true" />
 
 ### TODO
-[ ] Parse the remaining instructions for the live errors feature
+[ ] Parse the remaining instructions for the live errors feature (ldr, str, ...)
 
-[ ] Built-in compiler
+[ ] Symbol table (constants, indirect jumps, etc)
 
 [ ] File extension icon
 
@@ -22,7 +24,7 @@ This extension was made to be used by students in the [Computer Architecture](ht
 
 ## Requirements
 
-P16 compiler (assets/pas.exe) in your `$PATH`
+**P16 compiler** (assets/pas.exe) in your `$PATH` or in the same folder as the program you are compiling
 
 -----------------------------------------------------------------------------------------------------------
 

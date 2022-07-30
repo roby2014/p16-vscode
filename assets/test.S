@@ -6,7 +6,7 @@
 	.equ	VAR_INIT_VAL, 0
 
 
-
+ 
 ;; ----------------------------------------------------------------------------
     ;; startup section = PREPARE STACK AND CALL MAIN
 	.section .startup
@@ -18,8 +18,8 @@
 	add	r1, r1, #1
 	strb r1, [r0, #0]
 	pop	r1
-	pop	r0
-	movs pc, lr
+	pop	r0 
+	movs pc, lr  
 _start:
 	ldr	sp, tos_addr
 	ldr	pc, main_addr
@@ -31,7 +31,7 @@ main_addr:
 var_addr_startup:
 	.word var
 
-
+ 
 
 ;; ----------------------------------------------------------------------------
     ;; .text = CODE
@@ -42,7 +42,7 @@ main:
 	mov	r0, #VAR_INIT_VAL
 	ldr	r1, var_addr_main
 	strb r0, [r1, #0]
-	bl outport_write
+	bl outport_write  
 	mrs	r0, cpsr
 	mov	r1, #ENABLE_EXTINT
 	orr	r0, r0, r1

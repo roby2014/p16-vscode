@@ -19,3 +19,6 @@
 
 ## 0.0.6
 - Some parser fixes, "a bit more stable now", still need to fix symbol/identifiers parsing
+
+## 0.0.7
+- Updated README with built in compiler preview

@@ -13,6 +13,10 @@ This extension was made to be used by students in the [Computer Architecture](ht
 ### Live error messages
 <img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/live_errors_prev.png?raw=true" />
 
+### Built in compiler
+<img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/compiler_prev.png?raw=true" />
+
+
 ### TODO
 [ ] Parse the remaining instructions for the live errors feature (ldr, str, ...)
 

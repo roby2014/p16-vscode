@@ -2,8 +2,8 @@
     "name": "p16",
     "displayName": "P16",
     "description": "P16 Assembly extension for VSCode",
-    "version": "0.0.1",
-    "publisher": "roby",
+    "version": "0.2",
+    "publisher": "roby2014",
     "icon": "assets/icon.png",
     "main": "./out/main.js",
     "author": {
@@ -18,8 +18,10 @@
     },
     "categories": [
         "Programming Languages"
-    ],      "activationEvents": [
-      "onLanguage:p16"],
+    ],
+    "activationEvents": [
+        "onLanguage:p16"
+    ],
     "contributes": {
         "languages": [
             {
@@ -50,9 +52,9 @@
     },
     "dependencies": {
         "typescript": "^4.7.4"
-      },
-      "devDependencies": {
-      "@types/vscode": "^1.63.1",
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.63.1",
         "@types/node": "^18.0.6"
     }
 }

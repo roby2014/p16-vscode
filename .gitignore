@@ -9,3 +9,6 @@ chromedriver.exe
 chromedriver
 dist/
 .vscode/
+assets/pas.exe
+assets/*.hex
+assets/*.lst

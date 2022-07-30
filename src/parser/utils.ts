@@ -36,3 +36,8 @@ export function is_a_number(n: number) {
 export function valid_reg_num(n: number) {
     return n >= 0 && n <= MAX_REG;
 }
+
+/// returns true if line is a label (e.g label_name:)
+export function is_label(line: string): boolean {
+    return line.indexOf(":") == line.length - 1;
+} 

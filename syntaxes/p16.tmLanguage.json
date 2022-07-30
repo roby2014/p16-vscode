@@ -39,7 +39,6 @@
 		{
 			"include": "#symbols"
 		}
-		
 	],
 	"repository": {
 		"sections": {
@@ -68,10 +67,10 @@
 		},
 		"chars": {
 			"patterns": [
-					{
-						"match": "\\'\\S\\'",
-						"name": "string.char.p16"
-					  }
+				{
+					"match": "\\'\\S\\'",
+					"name": "string.char.p16"
+				}
 			]
 		},
 		"dec_numbers": {

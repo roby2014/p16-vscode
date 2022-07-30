@@ -9,14 +9,15 @@ import {
   window,
 } from "vscode";
 import { parse_line } from "./parser/parser";
-import { print_error } from "./parser/utils";
+import { is_label, print_error } from "./parser/utils";
+import { isP16File, isSectionOrOther } from "./utils";
 
 const p16Diagnostics = languages.createDiagnosticCollection("p16");
 
 /// main()
 export function activate(context: ExtensionContext) {
   Workspace.onDidChangeTextDocument((e: TextDocumentChangeEvent) => {
-    if (e.contentChanges.length === 0) {
+    if (!isP16File(e.document.uri.fsPath) || e.contentChanges.length === 0) {
       return;
     }
 
@@ -26,27 +27,32 @@ export function activate(context: ExtensionContext) {
   });
 }
 
-/// Refresh error diagnostics
+/// refresh error diagnostics
 async function refreshDiagnostics(document: TextDocument, curr_line: number) {
   p16Diagnostics.delete(document.uri);
-
-  let errorDiagnostics: Diagnostic[] = new Array(0);
+  let errorDiagnostics: Diagnostic[] = [];
 
   // parse input
   document.getText().split("\n").forEach((element, idx) => {
-    const line = element.toLowerCase().trim();
-    if (line.length > 0 && line[0] != ';' && idx != curr_line) {
-      let [success, err_msg] = parse_line(line, idx + 1);
-      if (!success) {
-        print_error(err_msg, line, idx);
-        // TODO: fix range with the actual column error index...
-        const range = new Range(idx, 0, idx, 0);
-        const diag = new Diagnostic(range, err_msg);
-        errorDiagnostics.push(diag);
+
+    // check if its a section, constant, symbol name, etc...
+    // if not, then we can try to parse the instruction
+    if (!isSectionOrOther(element) && !is_label(element.trimEnd())) {
+      // parse instruction with operands
+      const line = element.toLowerCase().trim();
+      if (line.length && line[0] != ';' && idx != curr_line) {
+        let [success, err_msg] = parse_line(line, idx + 1);
+        if (!success) {
+          print_error(err_msg, line, idx);
+          const range = new Range(idx, 0, idx, 0); // TODO: fix range with the actual column error index...
+          const diag = new Diagnostic(range, err_msg);
+          errorDiagnostics.push(diag);
+        }
       }
     }
+
   });
 
-  if (errorDiagnostics.length > 0)
+  if (errorDiagnostics.length)
     p16Diagnostics.set(document.uri, errorDiagnostics);
 }

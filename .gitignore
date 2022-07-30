@@ -12,3 +12,4 @@ dist/
 assets/pas.exe
 assets/*.hex
 assets/*.lst
+assets/*.S

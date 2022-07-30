@@ -61,6 +61,9 @@ export function parse_line(line: string, line_number: number): [boolean, string]
             return [false, `Instruction "${instruction}" does not exist.`];
     }
 
+    //if (is_label(line))
+    //    return [true, ``];
+
     let operands_end = line.length;
     const comment = line.indexOf(";"); // ignore rest of line if comment
     if (comment != -1) {

@@ -20,11 +20,13 @@ This extension was made to be used by students in the [Computer Architecture](ht
 ### TODO
 [ ] Parse the remaining instructions for the live errors feature (ldr, str, ...)
 
-[ ] Symbol table (constants, indirect jumps, etc)
+[ ] Symbols table (constants, labels, indirect jumps, etc)
 
 [ ] File extension icon
 
 [ ] Find bugs!
+
+[ ] Use another parsing techniques (using a lexer first, etc...)
 
 ## Requirements
 

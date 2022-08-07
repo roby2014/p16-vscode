@@ -1,3 +1,5 @@
+import { ISA_TABLE, LABELS_TABLE } from "./parser";
+
 const MAX_REG = 15;
 
 /// parses register operand (Rd, Rn, Rm ...)
@@ -47,5 +49,26 @@ export function valid_reg_num(n: number) {
 
 /// returns true if line is a label (e.g label_name:)
 export function is_label(line: string): boolean {
-    return line.indexOf(":") == line.length - 1;
-} 
+    return check_label(line)[0];
+}
+
+/// returns true if line is a label (e.g label_name:) 
+/// or false if not, and its error message
+export function check_label(line: string): [boolean, string] {
+    const x = line.indexOf(":");
+    if (x == -1) {
+        return [false, ``];
+    }
+
+    const label = line.substring(0, x).trim();
+    if (is_a_number(Number(label)) || ISA_TABLE.has(label)) {
+        return [false, `Label name cant be a number`];
+    }
+
+    if (x == label.length) {
+        LABELS_TABLE.set(label, 0); // TODO: get label value / pointing to
+        return [true, ``];
+    }
+
+    return [false, `Error parsing this label`];
+}

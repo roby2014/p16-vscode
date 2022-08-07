@@ -1,13 +1,7 @@
 import * as parser from "./parse_XXX";
 
-const ISA_INSTRUCTIONS = [
-    "ldr", "str", "ldrb", "strb", "push", "pop", "add", "sub", "adc", "sbc", "and", "orr",
-    "eor", "not", "cmp", "mov", "mvn", "movt", "movs", "asr", "lsl", "lsr", "ror", "rrx",
-    "mrs", "msr", "b", "bl", "beq", "bzs", "bne", "bzc", "blo", "bcs", "bhs", "bcc", "bge", "blt"
-]
-
 // function/branch table
-const fn_table = new Map([
+export const ISA_TABLE = new Map([
     ['adc', parser.parse_rd_rn_rm],
     ['add', parser.parse_rd_rn_rm_or_immed4],
     ['and', parser.parse_rd_rn_rm],
@@ -45,7 +39,14 @@ const fn_table = new Map([
     ['sbc', parser.parse_rd_rn_rm],
     ['str', parser.parse_rd_rnimmed4_or_rnrm],
     ['strb', parser.parse_rd_rnimmed3_or_rnrm],
+    ['.equ', parser.parse_equ],
 ]);
+
+/// CONSTANTS SYMBOL table (for equ mostly)
+export const CONSTANTS_TABLE = new Map();
+
+/// LABELS SYMBOL table
+export const LABELS_TABLE = new Map();
 
 // TODO: symbol table with constants/indirect jumps, so immed_8 etc dont throw errors when we are using a identifier name
 // The table should be refreshed on every edit, which is not perfect for performance, but usable.
@@ -58,7 +59,7 @@ export function parse_line(line: string, line_number: number): [boolean, string]
     line = line.trimStart().replace("\t", " "); // remove initial tab
     const c = line.indexOf(" ");
     const instruction = line.substring(0, c);
-    if (ISA_INSTRUCTIONS.find(x => x == instruction) == undefined || !fn_table.has(instruction)) {
+    if (!ISA_TABLE.has(instruction)) {
         if (instruction.length == 0)
             return [false, `Error parsing this line.`];
         else
@@ -72,6 +73,6 @@ export function parse_line(line: string, line_number: number): [boolean, string]
     }
 
     const operands = line.substring(c + 1, operands_end);
-    const [success, err_msg] = fn_table.get(instruction)(operands, instruction);
+    const [success, err_msg] = ISA_TABLE.get(instruction)(operands, instruction);
     return [success, err_msg];
 }

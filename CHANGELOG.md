@@ -22,3 +22,8 @@
 
 ## 0.0.7
 - Updated README with built in compiler preview
+
+## 0.0.8
+- Added constants symbol table (support for .equ constants)
+- Added labels table (not a complete implementation, bue does the job for now)
+- Fixed some bugs 

@@ -10,9 +10,9 @@ import {
   window,
   OutputChannel
 } from "vscode";
-import { extname } from "path";
-import { parse_line } from "./parser/parser";
-import { is_label, print_error } from "./parser/utils";
+import { extname, parse } from "path";
+import { parse_line, CONSTANTS_TABLE, LABELS_TABLE } from "./parser/parser";
+import { is_label, check_label, print_error } from "./parser/utils";
 import { isP16File, isSectionOrOther } from "./utils";
 
 const p16Diagnostics = languages.createDiagnosticCollection("p16");
@@ -69,15 +69,46 @@ export function activate(context: ExtensionContext) {
 /// refresh error diagnostics
 function refreshDiagnostics(document: TextDocument, curr_line: number) {
   p16Diagnostics.delete(document.uri);
+  CONSTANTS_TABLE.clear();
+  LABELS_TABLE.clear();
 
   let errorDiagnostics: Diagnostic[] = [];
 
-  // parse input
-  document.getText().split("\n").forEach((element, idx) => {
+  const content = document.getText().split("\n");
+
+  // first, parse labels and constants
+  content.forEach((element, idx) => {
+    element = element.trim();
+
+    // if label
+    let [success, err_msg] = check_label(element);
+    if (!success && err_msg.length > 0) {
+      print_error(err_msg, element, idx);
+      const range = new Range(idx, 0, idx, 0); // TODO: fix range with the actual column error index...
+      const diag = new Diagnostic(range, err_msg);
+      errorDiagnostics.push(diag);
+    }
+
+    // if constant
+    if (element.indexOf(".equ") != -1) {
+      [success, err_msg] = parse_line(element, idx + 1); // it wil call parse_equ anyways
+      if (!success && err_msg.length > 0) {
+        print_error(err_msg, element, idx);
+        const range = new Range(idx, 0, idx, 0); // TODO: fix range with the actual column error index...
+        const diag = new Diagnostic(range, err_msg);
+        errorDiagnostics.push(diag);
+      }
+    }
+
+  });
+
+  // parse instructions
+  content.forEach((element, idx) => {
+    element = element.trim();
 
     // check if its a section, constant, symbol name, etc...
     // if not, then we can try to parse the instruction
-    if (!isSectionOrOther(element) && !is_label(element.trimEnd())) {
+    if (!isSectionOrOther(element) && !is_label(element)) {
       // parse instruction with operands
       const line = element.toLowerCase().trim();
       if (line.length && line[0] != ';' && idx != curr_line) {

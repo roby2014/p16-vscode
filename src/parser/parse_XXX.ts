@@ -1,4 +1,5 @@
 import { parse_reg_operand, is_a_number } from "./utils";
+import { CONSTANTS_TABLE, ISA_TABLE, LABELS_TABLE } from "./parser";
 
 // TODO: make these functions return a RANGE where the error is...
 
@@ -6,7 +7,7 @@ import { parse_reg_operand, is_a_number } from "./utils";
 function parse_rd_rn_rm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'Rn', 'Rm']
     const usage = `( ${instr} Rd, Rn, Rm )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);;
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);;
     if (tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -37,7 +38,7 @@ function parse_rd_rn_rm(operands: string, instr: string): [boolean, string] {
 function parse_rd_rn_rm_or_immed4(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'Rn', 'Rm | #<immed_4>']
     const usage = `( ${instr} Rd, Rn, Rm | #<immed_4> )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -61,6 +62,12 @@ function parse_rd_rn_rm_or_immed4(operands: string, instr: string): [boolean, st
         let rm = tmp[2];
         if (rm[0] == '#') rm = rm.substring(1, rm.length) // remove '#'
 
+        if (CONSTANTS_TABLE.has(rm))
+            rm = CONSTANTS_TABLE.get(rm);
+
+        if (LABELS_TABLE.has(rm))
+            return [true, ``]; // TODO: get label value / pointing to
+
         let immed_4 = Number(rm);
         if (is_a_number(immed_4)) {
             if (immed_4 > 0xF) {
@@ -78,7 +85,7 @@ function parse_rd_rn_rm_or_immed4(operands: string, instr: string): [boolean, st
 function parse_rd_rn_immed4(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'Rn', '#<immed_4>']
     const usage = `( ${instr} Rd, Rn, #<immed_4> )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);;
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);;
     if (tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -97,6 +104,10 @@ function parse_rd_rn_immed4(operands: string, instr: string): [boolean, string] 
 
     // <immed_4>
     let rm = tmp[2].substring(tmp[2][0] == '#' ? 1 : 0, tmp[2].length) // remove '#' if it exists
+
+    if (CONSTANTS_TABLE.has(rm))
+        rm = CONSTANTS_TABLE.get(rm);
+
     let immed_4 = Number(rm);
     if (is_a_number(immed_4)) {
         if (immed_4 > 0xF) {
@@ -118,7 +129,7 @@ function parse_label(label: string, instr: string): [boolean, string] {
 function parse_rn_rm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rn', 'Rm']
     const usage = `( ${instr} Rn, Rm )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -143,7 +154,7 @@ function parse_rn_rm(operands: string, instr: string): [boolean, string] {
 function parse_rd_rm_or_immed8(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'Rm | #<immed_8>']
     const usage = `( ${instr} Rd, Rm | #<immed_8> )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);;
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);;
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -160,6 +171,12 @@ function parse_rd_rm_or_immed8(operands: string, instr: string): [boolean, strin
         // not Rm, maybe <immed_8>?
         let rm = tmp[1];
         if (rm[0] == '#') rm = rm.substring(1, rm.length); // remove '#'
+
+        if (CONSTANTS_TABLE.has(rm))
+            rm = CONSTANTS_TABLE.get(rm);
+
+        if (LABELS_TABLE.has(rm))
+            return [true, ``]; // TODO: get label value / pointing to
 
         let immed_8 = Number(rm);
         if (is_a_number(immed_8)) {
@@ -182,7 +199,7 @@ function parse_rd_rm_or_immed8(operands: string, instr: string): [boolean, strin
 function parse_rd_immed8(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', '<immed_8>']
     const usage = `( ${instr} Rd, #<immed_8> )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);;
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);;
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -195,6 +212,13 @@ function parse_rd_immed8(operands: string, instr: string): [boolean, string] {
 
     // <immed_8>
     let rm = tmp[1].substring(tmp[2][0] == '#' ? 1 : 0, tmp[1].length) // remove '#' if it exists
+
+    if (CONSTANTS_TABLE.has(rm))
+        rm = CONSTANTS_TABLE.get(rm);
+
+    if (LABELS_TABLE.has(rm))
+        return [true, ``]; // TODO: get label value / pointing to
+
     let immed_8 = Number(rm);
     if (is_a_number(immed_8)) {
         if (immed_8 > 0xFF) {
@@ -210,7 +234,7 @@ function parse_rd_immed8(operands: string, instr: string): [boolean, string] {
 function parse_rd_rm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'Rm']
     const usage = `( ${instr} Rd, Rm )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -234,7 +258,7 @@ function parse_rd_rm(operands: string, instr: string): [boolean, string] {
 function parse_rd(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd']
     const usage = `( ${instr} Rd )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 1) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -252,7 +276,7 @@ function parse_rd(operands: string, instr: string): [boolean, string] {
 function parse_rm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rm']
     const usage = `( ${instr} Rm )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 1) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -270,7 +294,7 @@ function parse_rm(operands: string, instr: string): [boolean, string] {
 function parse_rd_rn(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'Rn']
     const usage = `( ${instr} Rd, Rn )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -296,7 +320,7 @@ function parse_rd_rn(operands: string, instr: string): [boolean, string] {
 function parse_rd_labelS_or_rnimmed4_or_rnrm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'labelS | [Rn, #<immed_4>] | [Rn, Rm]']
     const usage = `( ${instr} Rd, labelS | [Rn, #<immed_4>] | [Rn, Rm] )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2 && tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -316,7 +340,7 @@ function parse_rd_labelS_or_rnimmed4_or_rnrm(operands: string, instr: string): [
 function parse_rd_rnimmed3_or_rnrm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', '[Rn, #<immed_3>] | [Rn, Rm]']
     const usage = `( ${instr} Rd, labelS | [Rn, #<immed_3>] | [Rn, Rm] )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2 && tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -336,7 +360,7 @@ function parse_rd_rnimmed3_or_rnrm(operands: string, instr: string): [boolean, s
 function parse_rd_rnimmed4_or_rnrm(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', '[Rn, #<immed_4>] | [Rn, Rm]']
     const usage = `( ${instr} Rd, [Rn, #<immed_4>] | [Rn, Rm] )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2 && tmp.length != 3) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -355,7 +379,7 @@ function parse_rd_rnimmed4_or_rnrm(operands: string, instr: string): [boolean, s
 function parse_pc_lr(operands: string, instr: string): [boolean, string] {
     // tmp = ['pc', 'lr']
     const usage = `( ${instr} pc, lr )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2 || tmp[0] != "pc" || tmp[1] != "lr") {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -368,7 +392,7 @@ function parse_pc_lr(operands: string, instr: string): [boolean, string] {
 function parse_rd_cpsr_or_spsr(operands: string, instr: string): [boolean, string] {
     // tmp = ['Rd', 'CPSR | SPSR']
     const usage = `( ${instr} Rd, CPSR | SPSR )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -392,7 +416,7 @@ function parse_rd_cpsr_or_spsr(operands: string, instr: string): [boolean, strin
 function parse_cpsr_or_spsr_rm(operands: string, instr: string): [boolean, string] {
     // tmp = ['CPSR | SPSR', 'Rm']
     const usage = `( ${instr} CPSR | SPSR, Rm )`;
-    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 1);
+    let tmp = operands.split(",").map(value => value.replace(/\s/g, "")).filter(value => value.length > 0);
     if (tmp.length != 2) {
         return [false, `${usage} : Wrong usage of "${instr}" instruction.`];
     }
@@ -408,6 +432,32 @@ function parse_cpsr_or_spsr_rm(operands: string, instr: string): [boolean, strin
         return [false, `${usage} \n\t ${err_msg}`];
     }
 
+    return [true, ``];
+}
+
+/// .equ SYMBOL, VALUE
+function parse_equ(operands: string): [boolean, string] {
+    // tmp = ['SYMBOL', 'VALUE']
+    const usage = `( .equ SYMBOL, VALUE )`;
+    let tmp = operands.split(",").map(it => it.replace(/\s/g, "")).filter(it => it.length > 0);
+    if (tmp.length != 2) {
+        return [false, `${usage} : Wrong usage of equ.`];
+    }
+
+    if (is_a_number(Number(tmp[0])) || ISA_TABLE.has(tmp[0])) {
+        return [false, `${usage} \n\t "${tmp[0]}" is not a valid symbol name.`];
+    }
+
+    if (CONSTANTS_TABLE.get(tmp[0]) != undefined) {
+        return [false, `${usage} \n\t Symbol "${tmp[0]}" already defined.`];
+    }
+
+    const VALUE = Number(tmp[1]);
+    if (!is_a_number(VALUE)) {
+        return [false, `${usage} \n\t "${tmp[1]}" is not a valid number.`];
+    }
+
+    CONSTANTS_TABLE.set(tmp[0], VALUE);
     return [true, ``];
 }
 
@@ -428,5 +478,6 @@ export {
     parse_rd_rnimmed4_or_rnrm,
     parse_pc_lr,
     parse_rd_cpsr_or_spsr,
-    parse_cpsr_or_spsr_rm
+    parse_cpsr_or_spsr_rm,
+    parse_equ
 };

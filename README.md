@@ -1,4 +1,4 @@
-## ⚠️ PROJECT UNDER DEVELOPMENT ⚠️ Dont expect it to be 100% functional (for now)
+### ⚠️ PROJECT UNDER DEVELOPMENT ⚠️ Dont expect it to be 100% functional (for now)
 
 # P16
 
@@ -17,6 +17,14 @@ This extension was made to be used by students in the [Computer Architecture](ht
 <img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/compiler_prev.png?raw=true" />
 
 
+## Requirements
+
+**P16 compiler** (assets/pas.exe) in your `$PATH` or in the same folder as the program you are compiling
+
+## Recommended extensions
+
+- [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
+
 ### TODO
 [ ] Parse the remaining instructions for the live errors feature (ldr, str, ...)
 
@@ -24,13 +32,9 @@ This extension was made to be used by students in the [Computer Architecture](ht
 
 [ ] File extension icon
 
-[ ] Find bugs!
+[ ] Find bugs
 
-[ ] Use another parsing techniques (using a lexer first, etc...)
-
-## Requirements
-
-**P16 compiler** (assets/pas.exe) in your `$PATH` or in the same folder as the program you are compiling
+[ ] Use smarter parsing techniques
 
 -----------------------------------------------------------------------------------------------------------
 

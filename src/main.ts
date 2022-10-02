@@ -20,7 +20,6 @@ const p16Diagnostics = languages.createDiagnosticCollection("p16");
 /// main()
 export function activate(context: ExtensionContext) {
 
-  // TODO: built in compiler button on top right side
   // register compile command
   const compileP16 = commands.registerCommand("p16-vscode.compileP16", () => {
     // dont compile if not a .s file
@@ -38,7 +37,7 @@ export function activate(context: ExtensionContext) {
     output.clear();
     output.show();
 
-    const command = `pas.exe ${file_path}`;
+    const command = `pas.exe "${file_path}"`;
     output.appendLine(`${command}\n`);
 
     const cp = require('child_process');
@@ -94,7 +93,7 @@ function refreshDiagnostics(document: TextDocument, curr_line: number) {
       [success, err_msg] = parse_line(element, idx + 1); // it wil call parse_equ anyways
       if (!success && err_msg.length > 0) {
         print_error(err_msg, element, idx);
-        const range = new Range(idx, 0, idx, 0); // TODO: fix range with the actual column error index...
+        const range = new Range(idx, 0, idx, err_msg.length); // TODO: fix range with the actual column error index...
         const diag = new Diagnostic(range, err_msg);
         errorDiagnostics.push(diag);
       }

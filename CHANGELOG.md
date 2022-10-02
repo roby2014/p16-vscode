@@ -27,3 +27,7 @@
 - Added constants symbol table (support for .equ constants)
 - Added labels table (not a complete implementation, bue does the job for now)
 - Fixed some bugs 
+
+## 0.0.9
+- Fixed compiler file path bug
+- Changed range when highlighting the error line

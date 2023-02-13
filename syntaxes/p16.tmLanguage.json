@@ -1,0 +1,152 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "p16",
+	"fileTypes": [
+		"s",
+		"S"
+	],
+	"patterns": [
+		{
+			"include": "#sections"
+		},
+		{
+			"include": "#instructions"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#registers"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#chars"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#dec_numbers"
+		},
+		{
+			"include": "#hex_numbers"
+		},
+		{
+			"include": "#labels"
+		},
+		{
+			"include": "#symbols"
+		}
+	],
+	"repository": {
+		"sections": {
+			"patterns": [
+				{
+					"name": "keyword.control.p16",
+					"match": "\\.(?i)(align|ascii|asciz|byte|data|equ|section|bss|space|text|word)(?-i)\\b"
+				}
+			]
+		},
+		"instructions": {
+			"patterns": [
+				{
+					"name": "support.function.p16",
+					"match": "(?i)\\b(?:ldr|str|ldrb|strb|push|pop|add|sub|adc|sbc|and|orr|eor|not|cmp|mov|mvn|movt|movs|asr|lsl|lsr|ror|rrx|mrs|msr|b|bl|beq|bzs|bne|bzc|blo|bcs|bhs|bcc|bge|blt)\\b"
+				}
+			]
+		},
+		"registers": {
+			"patterns": [
+				{
+					"name": "storage.register.p16",
+					"match": "(?i)\\b(?:spsr|cpsr|pc|lr|sp|r0|r1|r2|r3|r4|r5|r6|r7|r8|r9|r10|r11|r12|r13|r14|r15)\\b"
+				}
+			]
+		},
+		"chars": {
+			"patterns": [
+				{
+					"match": "\\'\\S\\'",
+					"name": "string.char.p16"
+				}
+			]
+		},
+		"dec_numbers": {
+			"patterns": [
+				{
+					"match": "#?[0-9]+\\b",
+					"name": "constant.numeric.dec.p16"
+				}
+			]
+		},
+		"hex_numbers": {
+			"patterns": [
+				{
+					"match": "#?-?(0x|&)[0-9a-fA-F_]+\\b",
+					"name": "constant.numeric.hex.p16"
+				}
+			]
+		},
+		"labels": {
+			"patterns": [
+				{
+					"match": "[a-zA-Z_][0-9a-zA-Z_]*\\b:",
+					"name": "entity.other.p16"
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"match": "\\b(?i)(def(b|w|s)|equ|align\\s.+\\.s)(?-i)\\b",
+					"name": "keyword.control.define.p16"
+				}
+			]
+		},
+		"symbols": {
+			"patterns": [
+				{
+					"match": "#?[a-zA-Z_][0-9a-zA-Z_]*\\b",
+					"name": "variable.name.p16"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"match": "([;]).*$",
+					"name": "comment.p16"
+				},
+				{
+					"begin": "\\/\\*",
+					"beginCaptures": {
+						"0": {
+							"name": "comment.begin.p16"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "comment.end.p16"
+						}
+					},
+					"end": "\\*\\/",
+					"name": "comment.p16"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.p16",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.p16",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.s"
+}

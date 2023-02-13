@@ -1,0 +1,11 @@
+**/*.ts
+**/tsconfig.json
+!file.ts
+.vscode-test
+package-lock.json
+src/**
+node_modules/**
+images/**
+webscrapper/**
+webpack.config.js
+.github/

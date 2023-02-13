@@ -1,0 +1,88 @@
+{
+    "name": "p16",
+    "displayName": "P16",
+    "description": "P16 Assembly extension for VSCode",
+    "version": "0.0.9",
+    "publisher": "roby2014",
+    "icon": "assets/icon.png",
+    "main": "./out/main.js",
+    "author": {
+        "name": "roby2014"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/roby2014/p16-vscode.git"
+    },
+    "engines": {
+        "vscode": "^1.69.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "onLanguage:p16"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "p16-vscode.compileP16",
+                "title": "Compile P16 assembly program",
+                "icon": {
+                    "light": "fileicons/compile.svg",
+                    "dark": "fileicons/compile.svg"
+                }
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceLangId == p16",
+                    "command": "p16-vscode.compileP16",
+                    "group": "navigation@1"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "p16-vscode.compileP16",
+                "key": "ctrl+shift+d",
+                "mac": "cmd+shift+d",
+                "when": "resourceLangId == p16"
+            }
+        ],
+        "languages": [
+            {
+                "id": "p16",
+                "aliases": [
+                    "p16",
+                    "P16"
+                ],
+                "extensions": [
+                    ".S",
+                    ".s"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "p16",
+                "scopeName": "source.s",
+                "path": "./syntaxes/p16.tmLanguage.json"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run build",
+        "build": "tsc",
+        "watch": "tsc -watch"
+    },
+    "dependencies": {
+        "child_process": "^1.0.2",
+        "typescript": "^4.7.4"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.6",
+        "@types/vscode": "^1.63.1"
+    }
+}

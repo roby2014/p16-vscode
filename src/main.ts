@@ -17,8 +17,8 @@ import {
 import { platform } from 'os';
 import { exec } from 'child_process';
 import fs = require('fs');
-const p16InstructionsDoc: { [key: string]: string } = JSON.parse(fs.readFileSync('./src/p16InstructionsDoc.json', 'utf-8'));
 
+import { p16InstructionsDoc } from "./p16InstructionsDoc";
 import { parseErrorOutput } from "./parser";
 import { isP16File } from "./utils";
 
@@ -28,9 +28,9 @@ const p16Diagnostics = languages.createDiagnosticCollection("p16");
 /// register hover provider (for showing instruction documentation)
 languages.registerHoverProvider('p16', {
   provideHover(document: TextDocument, position: Position, token: CancellationToken) {
-      const range = document.getWordRangeAtPosition(position);
-      const instr = document.getText(range);
-      return new Hover(p16InstructionsDoc[instr] || "Instruction not found.");
+    const range = document.getWordRangeAtPosition(position);
+    const instr = document.getText(range);
+    return new Hover(p16InstructionsDoc[instr] || "Instruction not found.");
   }
 });
 

@@ -6,13 +6,13 @@ This extension was made to be used by students in the [Computer Architecture](ht
 ## Features
 
 ### Syntax Highlighting
-<img width="500" src="https://github.com/roby2014/p16-vscode/blob/master/assets/test_prev.png?raw=true" />
+<img width="500" src="./assets/test_prev.png" />
 
 ### Live error messages
-<img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/live_errors_prev.png?raw=true" />
+<img width="600" src="./assets/live_errors_prev.png" />
 
 ### Built in compiler
-<img width="600" src="https://github.com/roby2014/p16-vscode/blob/master/assets/compiler_prev.png?raw=true" />
+<img width="600" src="./assets/compiler_prev.png" />
 
 
 ## Requirements

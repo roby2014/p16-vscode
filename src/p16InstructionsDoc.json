@@ -1,7 +1,0 @@
-{
-    "mov": "Moves data from one register to another or from a register to memory.",
-    "add": "Adds the contents of two registers and stores the result in a third register.",
-    "sub": "Subtracts the contents of two registers and stores the result in a third register.",
-    "jmp": "Jumps to a specified memory location.",
-    "jl": "Jumps to a specified memory location if the contents of a register are less than zero."
-}

@@ -12,25 +12,53 @@ import {
   Position,
   CancellationToken,
   OutputChannel,
-  DiagnosticSeverity
+  DiagnosticSeverity,
+  MarkdownString
 } from "vscode";
 import { platform } from 'os';
 import { exec } from 'child_process';
 import fs = require('fs');
 
 import { p16InstructionsDoc } from "./p16InstructionsDoc";
+import { p16RegistersDoc } from "./p16RegistersDoc";
+import { isP16Section, p16SectionsDoc } from "./p16SectionsDoc"
 import { parseErrorOutput } from "./parser";
 import { isP16File } from "./utils";
 
 /// create p16 diagnostics (for error/warning/hints)
 const p16Diagnostics = languages.createDiagnosticCollection("p16");
 
+/// formats markdown string documentation for instruction hover
+function formatInstrMdHover(instructionDoc: string, registersDoc: string[]) {
+  const registerDocumentation = registersDoc.map((it) => `### ${it}`).join("\n");
+  const [instr, info, affectedFlags] = instructionDoc.split("\n");
+  return `## ${instr} \n ### \`${info}\` \n ### ${affectedFlags} \n ${registerDocumentation}`
+}
+
 /// register hover provider (for showing instruction documentation)
 languages.registerHoverProvider('p16', {
   provideHover(document: TextDocument, position: Position, token: CancellationToken) {
+    const rendered = new Array<MarkdownString>();
     const range = document.getWordRangeAtPosition(position);
     const instr = document.getText(range);
-    return new Hover(p16InstructionsDoc[instr] || "Instruction not found.");
+    
+    // is section
+    if (isP16Section(instr)) {
+      const sectionRange = new Range(range.start.line, range.start.character - 1, range.end.line, range.end.character);
+      const section = document.getText(sectionRange);
+      if (p16SectionsDoc[section]) {
+        const [usage, info] = p16SectionsDoc[section].split("\n")
+        rendered.push(new MarkdownString(`### ${usage} \n ${info}`));
+        return new Hover(rendered);
+      }
+    }
+
+    // is instruction
+    if (p16InstructionsDoc[instr]) {
+      const hoverStr = formatInstrMdHover(p16InstructionsDoc[instr], p16RegistersDoc[instr])
+      rendered.push(new MarkdownString(hoverStr));
+      return new Hover(rendered);
+    }
   }
 });
 

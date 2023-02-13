@@ -11,6 +11,9 @@ This extension was made to be used by students in the [Computer Architecture](ht
 ### Live error messages
 <img width="600" src="./assets/live_errors_prev.png" />
 
+### Documentation on hover
+<img width="600" src="./assets/hover_doc.png" />
+
 ### Built in compiler
 <img width="600" src="./assets/compiler_prev.png" />
 

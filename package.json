@@ -2,7 +2,7 @@
     "name": "p16",
     "displayName": "P16",
     "description": "P16 Assembly extension for VSCode",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "roby2014",
     "icon": "assets/icon.png",
     "main": "./out/main.js",
@@ -70,7 +70,21 @@
                 "scopeName": "source.s",
                 "path": "./syntaxes/p16.tmLanguage.json"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "p16ExecutablePath",
+            "properties": {
+                "p16.executablePath": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "Your P16 compiler executable path (e.g: `H:\\p16\\pas.exe`)."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run build",

@@ -22,6 +22,9 @@ This extension was made to be used by students in the [Computer Architecture](ht
 
 **P16 compiler** (`assets/pas.exe` if windows) in your `$PATH` or in the same folder as the program you are compiling.
 
+## Extension settings
+- `p16.executablePath` : Your P16 compiler executable path (e.g: `H:\\p16\\pas.exe`).
+
 ## Recommended extensions
 
 - [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)

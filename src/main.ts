@@ -8,6 +8,7 @@ import {
   languages,
   commands,
   window,
+  workspace,
   Hover,
   Position,
   CancellationToken,
@@ -41,7 +42,7 @@ languages.registerHoverProvider('p16', {
     const rendered = new Array<MarkdownString>();
     const range = document.getWordRangeAtPosition(position);
     const instr = document.getText(range);
-    
+
     // is section
     if (isP16Section(instr)) {
       const sectionRange = new Range(range.start.line, range.start.character - 1, range.end.line, range.end.character);
@@ -93,7 +94,7 @@ export function activate(context: ExtensionContext) {
     }
 
     // execute command
-    const executable = platform() === 'win32' ? "pas.exe" : "pas";
+    const executable = workspace.getConfiguration("p16.executablePath") || (platform() === 'win32' ? "pas.exe" : "pas");
     const command = `${executable} "${file_path}"`;
     output.appendLine(`${command}\n`);
 
@@ -138,7 +139,7 @@ function refreshDiagnostics(document: TextDocument) {
   }
 
   // compile the code and parse the error output
-  const executable = platform() === 'win32' ? "pas.exe" : "pas";
+  const executable = workspace.getConfiguration("p16.executablePath") || (platform() === 'win32' ? "pas.exe" : "pas");
   const command = `${executable} "${document.uri.fsPath}"`;
   exec(command, (error, stdout, stderr) => {
     if (error) {

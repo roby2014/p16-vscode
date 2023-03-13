@@ -12,3 +12,6 @@
 
 ## 1.0.3
 - Changed default assembler to `pas16as`.
+
+## 1.0.4
+- Fixed linux default assembler typo.

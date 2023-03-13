@@ -15,3 +15,6 @@
 
 ## 1.0.4
 - Fixed linux default assembler typo.
+
+## 1.0.5
+- Fixed default assembler typo for both windows and linux.

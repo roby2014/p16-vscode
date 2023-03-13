@@ -12,8 +12,8 @@ export function isP16File(filePath: string): boolean {
 export function getP16Executable(): string {
     /// default executables in case "p16.executablePath" is not set
     const defaultExecutable = {
-        win: "pas16as.exe",
-        linux: "pas16as"
+        win: "p16as.exe",
+        linux: "p16as"
     };
 
     const executable = workspace.getConfiguration("p16").get<string>("executablePath") ||

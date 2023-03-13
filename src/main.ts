@@ -95,7 +95,6 @@ export function activate(context: ExtensionContext) {
 
     // execute command
     const executable = workspace.getConfiguration("p16").get("executablePath") || (platform() === 'win32' ? "pas.exe" : "pas");
-    console.log(executable)
     const command = `${executable} "${file_path}"`;
     output.appendLine(`${command}\n`);
 
@@ -141,7 +140,6 @@ function refreshDiagnostics(document: TextDocument) {
 
   // compile the code and parse the error output
   const executable = workspace.getConfiguration("p16").get("executablePath") || (platform() === 'win32' ? "pas.exe" : "pas");
-  console.log(executable)
   const command = `${executable} "${document.uri.fsPath}"`;
   exec(command, (error, stdout, stderr) => {
     if (error) {

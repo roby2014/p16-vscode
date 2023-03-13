@@ -9,3 +9,6 @@
 ## 1.0.2
 - Fixed a quick bug about last commit.
 - Added more information about extension's settings.
+
+## 1.0.3
+- Changed default assembler to `pas16as`.

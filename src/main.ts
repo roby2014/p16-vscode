@@ -16,7 +16,6 @@ import {
   DiagnosticSeverity,
   MarkdownString
 } from "vscode";
-import { platform } from 'os';
 import { exec } from 'child_process';
 import fs = require('fs');
 
@@ -24,7 +23,7 @@ import { p16InstructionsDoc } from "./p16InstructionsDoc";
 import { p16RegistersDoc } from "./p16RegistersDoc";
 import { isP16Section, p16SectionsDoc } from "./p16SectionsDoc"
 import { parseErrorOutput } from "./parser";
-import { isP16File } from "./utils";
+import { isP16File, getP16Executable } from "./utils";
 
 /// create p16 diagnostics (for error/warning/hints)
 const p16Diagnostics = languages.createDiagnosticCollection("p16");
@@ -94,10 +93,9 @@ export function activate(context: ExtensionContext) {
     }
 
     // execute command
-    const executable = workspace.getConfiguration("p16").get("executablePath") || (platform() === 'win32' ? "pas.exe" : "pas");
+    const executable = getP16Executable();
     const command = `${executable} "${file_path}"`;
     output.appendLine(`${command}\n`);
-
     exec(command, (error, stdout, stderr) => {
       output.append(stdout.toString().trim());
       if (error) {
@@ -139,7 +137,7 @@ function refreshDiagnostics(document: TextDocument) {
   }
 
   // compile the code and parse the error output
-  const executable = workspace.getConfiguration("p16").get("executablePath") || (platform() === 'win32' ? "pas.exe" : "pas");
+  const executable = getP16Executable();
   const command = `${executable} "${document.uri.fsPath}"`;
   exec(command, (error, stdout, stderr) => {
     if (error) {

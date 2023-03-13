@@ -1,9 +1,24 @@
 import { extname } from "path";
+import { workspace } from "vscode";
+import { platform } from 'os';
 
 /// returns true if we on a P16 file
 export function isP16File(filePath: string): boolean {
     const fileExt = extname(filePath);
     return [".S", ".s"].includes(fileExt) && !filePath.includes(".git");;
+}
+
+/// Returns P16's executable command.
+export function getP16Executable(): string {
+    /// default executables in case "p16.executablePath" is not set
+    const defaultExecutable = {
+        win: "pas16as.exe",
+        linux: "pas16.as"
+    };
+
+    const executable = workspace.getConfiguration("p16").get<string>("executablePath") ||
+        (platform() === 'win32' ? defaultExecutable.win : defaultExecutable.linux);
+    return executable;
 }
 
 /// returns true if line has a section identifier

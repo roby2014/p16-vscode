@@ -20,19 +20,21 @@ This extension was made to be used by students in the [Computer Architecture](ht
 
 ## Requirements
 
-**P16 compiler** (`assets/pas.exe` if windows) in your `$PATH` or in the same folder as the program you are compiling.
+**P16 compiler** (check [#extension-settings](#extension-settings) section).
 
 ## Extension settings
 
 `CTRL`+`Shift`+`P` -> `Preferences: Open User Settings (JSON)`
 
-- `p16.executablePath` : Your P16 compiler executable path (e.g: `H:\\p16\\pas.exe`).
-  - In case this setting is not set, it will use either `pas.exe` or `pas` by default, depending on what OS you are running.
+- `p16.executablePath` : Your P16 compiler executable path.
+  - In case this setting is not set, it will use either `p16as.exe` or `p16as` by default, depending on what OS you are running.
 
 Simple example of how `settings.json` can look:
 ```json
 {
-    "p16.executablePath": "./home/roby/compilers/pas_v1"
+    "p16.executablePath": "./home/roby/compilers/pas_v1", // linux
+    
+    "p16.executablePath": "C:\\p16\\pas_v1.exe" // windows
 }
 ```
 

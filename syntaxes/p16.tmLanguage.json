@@ -45,7 +45,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.p16",
-					"match": "\\.(?i)(align|ascii|asciz|byte|data|equ|section|bss|space|text|word)(?-i)\\b"
+					"match": "\\.(?i)(align|ascii|asciz|byte|data|equ|section|bss|space|text|word|stack)(?-i)\\b"
 				}
 			]
 		},

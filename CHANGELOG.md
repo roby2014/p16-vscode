@@ -18,3 +18,7 @@
 
 ## 1.0.5
 - Fixed default assembler typo for both windows and linux.
+
+## 1.0.6
+- Added `stack` section keyword.
+- Fixed README compiler settings.

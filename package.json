@@ -2,7 +2,7 @@
     "name": "p16",
     "displayName": "P16",
     "description": "P16 Assembly extension for VSCode",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "publisher": "roby2014",
     "icon": "assets/icon.png",
     "main": "./out/main.js",

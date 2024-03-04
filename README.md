@@ -32,9 +32,9 @@ This extension was made to be used by students in the [Computer Architecture](ht
 Simple example of how `settings.json` can look:
 ```json
 {
-    "p16.executablePath": "./home/roby/compilers/pas_v1", // linux
+    "p16.executablePath": "./home/roby/compilers/p16as", // linux
     
-    "p16.executablePath": "C:\\p16\\pas_v1.exe" // windows
+    "p16.executablePath": "C:\\p16\\p16as.exe" // windows
 }
 ```
 
